@@ -1,5 +1,64 @@
 # KatKin's Full-stack Coding Test
 
+# Joe Jackson - Readme
+
+An overview of how to start the project, the approach to solving the requirements and reflections.
+
+Mewsic to your earrs no doubt :heart_eyes_cat:
+
+## Getting started
+
+1. Install the dependencies `npm i`.
+2. Run the development server `npm run dev`
+3. Check the [/comms/your-next-delivery/:userId](http://localhost:3001/comms/your-next-delivery/ff535484-6880-4653-b06e-89983ecf4ed5) endpoint is working.
+4. Follow the instructions to start the frontend [here](https://github.com/Joepock123/clawmmunication-and-meowssages-client).
+
+## Acceptability Criteria
+
+- [x] GET `/comms/your-next-delivery/:userId` endpoint that returns the correct response.
+  - [x] users module to retrieve user.
+    - [x] Service to return user with active subscriptions.
+  - [x] comms module to return channel-agnostic comms
+    - [x] Controller with endpoint.
+    - [x] Service to get comms.
+      - [x] Calculate total cost.
+      - [x] Generate title and messages.
+  - [x] Testing
+    - [x] Test utility function.
+    - [x] Integration test for endpoint.
+
+## Approach
+
+- _As a highly personalized service_ it's important the communication is correct so I'd like to test this.
+- The _templating logic for this channel-agnostic_ so separate out the comms into its own module.
+- We can probably create more modules e.g. pricing. However due to the time contraints I'll stick with 2: comms and users.
+- Test the price calculation if there is time.
+- Probably only time to build the happy path (no error handling).
+- Due to time contraints the quickest way I can build the frontend is in a separate repo.
+
+## Technical stack
+
+- Backend
+  - [cors](https://www.npmjs.com/package/cors?activeTab=readme): to allow requests from our client.
+- Frontend
+  - [create-next-app](https://nextjs.org/docs/pages/api-reference/cli/create-next-app): to quickly scaffold a React-based metaframework with typescript and tailwind for styling.
+  - [SWR](https://swr.vercel.app/): a nice data fetching library.
+
+## Next steps
+
+- This project currently only supports the happy path. There is not exception handling on the front or backend.
+  - Error handling on the backend to return the correct status codes and messages to the frontend.
+  - Error handling on the frontend to improve the UX, letting the user know the cause of the error.
+- Improve test coverage.
+  - Including unit testing for the `calculateCatFoodCost` function and exception handling when the user is not found.
+- Separation of concerns.
+  - It may make sense to move the `calculateCatFoodCost` into a separate pricing module as functions like these may be used by other modules than comms.
+- Consider further abstractions.
+  - For example, creating a function to calculate the `freeGift` boolean value so it is easier to test.
+- Use a monorepo setup to improve development experience (share types accross front and backend for example).
+
+---
+
 ## BEFORE YOU BEGIN
 
 Please take your time to thoroughly read through this README. If anything is unclear or you think there is a mistake somewhere, please let us know via email. We recommend you spend around an hour or so on this test. Submission instructions are at the bottom of this README.
@@ -19,20 +78,24 @@ We suggest you spend around 60-90 minutes on this in total, and do as much as yo
 - The code should be written in Typescript and _must_ compile and run, on Node 18 or later.
 - We take into account your previous experience with TypeScript.
 - Don't implement anything unnecessary - i.e. authentication, database, containerization. We won't give additional credit for that.
-- 
-## Description
- As a highly personalized service, communications to our customers must be tailored purr-fectly and personalized to each and every customer. As we have multiple channels of communications (i.e. emails, SMS, landing pages), we like to keep the templating logic for this channel-agnostic and in a dedicated REST API service.
+-
 
- For example, calling `GET /comms/welcome-fresh/<USER-ID>` might return
+## Description
+
+As a highly personalized service, communications to our customers must be tailored purr-fectly and personalized to each and every customer. As we have multiple channels of communications (i.e. emails, SMS, landing pages), we like to keep the templating logic for this channel-agnostic and in a dedicated REST API service.
+
+For example, calling `GET /comms/welcome-fresh/<USER-ID>` might return
+
 ```json
 {
-    "message": "Welcome to KatKin, <full-name>! We're super excited for <cat1> and <cat2> to join the KatKin club and start loving fresh!"
+  "message": "Welcome to KatKin, <full-name>! We're super excited for <cat1> and <cat2> to join the KatKin club and start loving fresh!"
 }
 ```
+
 with the interpolated values populated with that specific customer's (and cat's) data. This endpoint could then be used to generate content for SMSs, emails, or personalized web pages.
 
-
 ## The setup
+
 A skeletal backend has already been setting up for you, using TypeScript and NestJS - the language and framework we use at KatKin. To run this backend, you can do `yarn start`.
 
 There is no frontend setup - you are free to setup one of your own React-based one as you choose, either within the same repository or in a different repository.
@@ -84,7 +147,9 @@ For example, with the following user:
   ]
 }
 ```
+
 hitting `/comms/your-next-delivery/ff535484-6880-4653-b06e-89983ecf4ed5` should return the following body:
+
 ```JSON
 {
     "title": "Your next delivery for Dorian and Ocie",
@@ -111,19 +176,17 @@ F -> 71.25 GBP
 
 So for example, if a user had 3 cats, each on pouch size A, B, C, but only the first two cats (on A and B) currently have an active subscription, then their price would be 55.50 + 59.50 = £115.00 pounds.
 
-
 ## 2. The Frontend Task
 
 Using React (or your favourite React-based metaframework of choice), create a frontend with just one page - `/welcome/<USER-ID>`, which calls the API endpoint described in the previous step and renders the message in a style similar to the figma file provided [here](https://www.figma.com/design/b6Q7B8dBr6QbdqkhPNoFgD/Untitled?node-id=0-1).
 
 You can:
-  - Create a separate folder/repository to do this if you choose.
-  - Use any libraries/frameworks you want, i.e. Tailwind, styled components (or not - feel free to just use regular styling/CSS as well).
-  - Use any project generators you want (i.e. `create-next-app`, `create-react-app`, `create-vite-app`)
 
-_Note_: We aren't expecting an exact 1-to-1 copy of the design, i.e. exact fonts, spacing, or colors. Just get roughly close enough. __Use any random image of a cat__ that you can find.
+- Create a separate folder/repository to do this if you choose.
+- Use any libraries/frameworks you want, i.e. Tailwind, styled components (or not - feel free to just use regular styling/CSS as well).
+- Use any project generators you want (i.e. `create-next-app`, `create-react-app`, `create-vite-app`)
 
-
+_Note_: We aren't expecting an exact 1-to-1 copy of the design, i.e. exact fonts, spacing, or colors. Just get roughly close enough. **Use any random image of a cat** that you can find.
 
 # Submission
 
